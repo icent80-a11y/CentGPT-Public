@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CentGPT FREE</title>
+<meta name="theme-color" content="#111111">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#f5f2ea;--card:#fff;--text:#151515;--muted:#6f6f6f;--line:#dedbd2;--soft:#efede6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:760px;margin:auto;padding:18px 14px 90px}header{padding:10px 2px 14px}h1{font-size:30px;margin:0 0 6px}h2{font-size:20px;margin:0 0 10px}.sub,.note{color:var(--muted);line-height:1.45}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0;box-shadow:0 3px 14px rgba(0,0,0,.03)}
+.badge{display:inline-block;background:#111;color:#fff;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;margin-bottom:8px}
+input,textarea,select{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;font:inherit;color:inherit}
+textarea{min-height:100px;resize:vertical}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1 1 150px}
+button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font-weight:800;font-size:13px}.primary{background:#111;color:#fff;border-color:#111}
+.tipgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.tip{border:1px solid var(--line);border-radius:14px;padding:11px;background:#fff}.tip h3{font-size:15px;margin:0 0 7px}.tip p{font-size:12px;color:var(--muted);line-height:1.4;margin:0 0 8px}.tip code{display:block;white-space:pre-wrap;background:var(--soft);border-radius:10px;padding:8px;font-size:11px;line-height:1.4}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}.actions button{font-size:11px;padding:8px}
+.result{white-space:pre-wrap;background:var(--soft);border-radius:12px;padding:10px;font-size:12px;line-height:1.5;margin-top:10px}
+.hidden{display:none}.count{font-size:12px;color:var(--muted);margin-top:7px}
+.pro{border:1px dashed #999;background:linear-gradient(135deg,#fff,#f2efe8)}
+footer{font-size:11px;color:var(--muted);text-align:center;padding:20px 0}
+@media(max-width:650px){.tipgrid{grid-template-columns:1fr}.actions{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <span class="badge">CentGPT FREE</span>
+  <h1>Помощник для ChatGPT</h1>
+  <div class="sub">Напиши задачу обычными словами. CentGPT подскажет подходящий лайфхак и соберёт готовый запрос.</div>
+</header>
+
+<section class="panel">
+  <h2>🔎 Быстрый поиск</h2>
+  <input id="search" type="search" placeholder="Например: фото, Reels, файл, текст, проверить ответ…">
+  <div id="searchCount" class="count"></div>
+</section>
+
+<section class="panel">
+  <h2>🔥 3 лайфхака дня</h2>
+  <div class="note">Каждый день показывается новая тройка из FREE-базы.</div>
+  <div id="daily" class="tipgrid" style="margin-top:10px"></div>
+  <div class="row" style="margin-top:10px"><button id="more">Ещё 3</button><button id="pack" class="primary">Собрать контент-пакет</button></div>
+</section>
+
+<section class="panel">
+  <h2>🧠 Собрать сильный запрос</h2>
+  <textarea id="goal" placeholder="Что нужно сделать? Например: придумать Instagram-пост с лайфхаком по ChatGPT для новичков"></textarea>
+  <div class="row" style="margin-top:8px">
+    <select id="mode"><option>Точно</option><option>Коротко</option><option>Глубоко</option><option>Креативно</option></select>
+    <button id="build" class="primary">Собрать запрос</button>
+  </div>
+  <div id="built" class="result hidden"></div>
+  <div id="builtActions" class="row hidden" style="margin-top:8px"><button id="copyBuilt">Копировать</button><button id="openBuilt">Открыть ChatGPT</button></div>
+</section>
+
+<section class="panel pro">
+  <h2>🔒 CentGPT PRO</h2>
+  <div class="note">Полная версия развивается отдельно и не публикует закрытую базу в исходном коде этой страницы.</div>
+  <div class="count">PRO: расширенная база, мастер-промптов, Instagram Content Factory, архив и статусы, 30-дневный план, бизнес/маркетплейсы/файлы/фото/видео и собственные шаблоны.</div>
+</section>
+
+<footer>CentGPT · Public FREE edition</footer>
+</main>
+<script>
+const tips=[
+{cat:"Промпты",t:"Сначала попроси уточнить",d:"Сложная задача становится точнее, если ChatGPT сначала соберёт недостающие данные.",c:"Сначала задай мне до 5 уточняющих вопросов, затем выполни задачу."},
+{cat:"Промпты",t:"Зафиксируй, что нельзя менять",d:"Полезно для фото, текста, документов и дизайна.",c:"Сохрани без изменений все элементы, которые я не просил менять."},
+{cat:"Промпты",t:"Попроси самопроверку",d:"Отдельная проверка снижает число пропущенных условий.",c:"Перед финальным ответом проверь результат по всем моим условиям."},
+{cat:"Тексты",t:"Задай формат ответа",d:"Таблица, список или готовый текст — скажи это заранее.",c:"Ответ дай в формате: проблема | причина | решение."},
+{cat:"Работа",t:"Раздели сложную задачу",d:"Анализ и выполнение лучше вести по этапам.",c:"Работай в 3 этапа: анализ, варианты, затем финальный результат."},
+{cat:"Поиск",t:"Проверяй актуальность",d:"Для цен, новостей и правил нужны свежие источники.",c:"Проверь актуальную информацию в интернете и укажи дату актуальности."},
+{cat:"Фото",t:"Редактируй только нужное",d:"Так меньше риск, что генерация изменит лицо, фон или детали.",c:"Измени только указанный объект. Всё остальное сохрани максимально близко к исходнику."},
+{cat:"Видео",t:"Продолжай с последнего кадра",d:"Для продолжения сцены важно запретить перезапуск.",c:"Продолжи строго с последнего кадра. Не начинай сцену заново и не меняй согласованные детали."},
+{cat:"Файлы",t:"Не выдумывай данные",d:"В документах и таблицах важно опираться только на источник.",c:"Используй загруженный файл как основной источник. Не придумывай отсутствующие данные."},
+{cat:"Контент",t:"Один пост — одна мысль",d:"Так лайфхак читается быстрее и лучше запоминается.",c:"Выбери одну главную мысль и построй весь пост только вокруг неё."},
+{cat:"Instagram",t:"Дай хук до 6 слов",d:"Обложка должна считываться за секунду.",c:"Придумай 5 вариантов заголовка для обложки, максимум 6 слов каждый, без кликбейта."},
+{cat:"Новичкам",t:"Один шаг за раз",d:"Подходит для настройки приложений и сервисов.",c:"Давай мне только один следующий шаг. После него я покажу результат, и ты скажешь, что делать дальше."}
+];
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const copy=async s=>{try{await navigator.clipboard.writeText(s)}catch(e){const t=document.createElement("textarea");t.value=s;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove()}};
+let current=[];
+function dailyTips(){const d=new Date();const seed=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);return [0,1,2].map(i=>tips[(seed+i*5)%tips.length])}
+function render(arr){current=arr;document.getElementById("daily").innerHTML=arr.map((x,i)=>'<div class="tip"><h3>'+(i+1)+'. '+esc(x.t)+'</h3><p>'+esc(x.d)+'</p><code>'+esc(x.c)+'</code><div class="actions"><button data-copy="'+esc(x.c)+'">Копировать</button><button data-post="'+i+'">Instagram</button></div></div>').join("");document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>copy(b.dataset.copy));document.querySelectorAll("[data-post]").forEach(b=>b.onclick=()=>makePost(arr[+b.dataset.post]))}
+function makePost(t){const p='Создай Instagram-контент по лайфхаку:\n\nТема: '+t.t+'\nЗачем: '+t.d+'\nГотовый промпт: '+t.c+'\n\nДай: 1) заголовок до 6 слов, 2) текст для фото-поста, 3) короткую подпись, 4) один естественный CTA. Пиши понятно новичку, без воды и кликбейта.';show(p)}
+function show(s){const o=document.getElementById("built");o.textContent=s;o.classList.remove("hidden");document.getElementById("builtActions").classList.remove("hidden")}
+render(dailyTips());
+document.getElementById("more").onclick=()=>render([...tips].sort(()=>Math.random()-.5).slice(0,3));
+document.getElementById("pack").onclick=()=>show('Создай контент-пакет для Instagram из трёх лайфхаков ниже. Для каждого дай фото-пост, карусель 5–7 слайдов, Reels 10–15 секунд из слайдов, 3 Stories, подпись и CTA.\n\n'+current.map((x,i)=>(i+1)+'. '+x.t+'\n'+x.d+'\nПромпт: '+x.c).join('\n\n'));
+document.getElementById("build").onclick=()=>{const g=document.getElementById("goal").value.trim();if(!g)return;const m=document.getElementById("mode").value;show('ЗАДАЧА:\n'+g+'\n\nРЕЖИМ: '+m+'\n\nТребования:\n— Пойми практическую цель.\n— Если критически важной информации не хватает, задай только необходимые вопросы.\n— Не выдумывай факты.\n— Дай готовый к использованию результат.\n— Перед финалом проверь выполнение условий.')};
+document.getElementById("copyBuilt").onclick=()=>copy(document.getElementById("built").textContent);
+document.getElementById("openBuilt").onclick=async()=>{await copy(document.getElementById("built").textContent);window.open("https://chatgpt.com/","_blank")};
+document.getElementById("search").addEventListener("input",e=>{const q=e.target.value.toLowerCase().trim();const arr=q?tips.filter(x=>(x.t+" "+x.d+" "+x.c+" "+x.cat).toLowerCase().includes(q)):dailyTips();render(arr.slice(0,6));document.getElementById("searchCount").textContent=q?(arr.length?"Найдено: "+arr.length:"Ничего не найдено в FREE-базе"):""});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body></html>
