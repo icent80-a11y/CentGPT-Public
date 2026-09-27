@@ -96,4 +96,5 @@ document.getElementById("openBuilt").onclick=async()=>{await copy(document.getEl
 document.getElementById("search").addEventListener("input",e=>{const q=e.target.value.toLowerCase().trim();const arr=q?tips.filter(x=>(x.t+" "+x.d+" "+x.c+" "+x.cat).toLowerCase().includes(q)):dailyTips();render(arr.slice(0,6));document.getElementById("searchCount").textContent=q?(arr.length?"Найдено: "+arr.length:"Ничего не найдено в FREE-базе"):""});
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
+<!-- deploy trigger -->
 </body></html>
